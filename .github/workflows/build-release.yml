@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       source_ref:
-        description: Private source branch or tag to build (for example main or v1.0.0)
+        description: Private source branch, tag, or exact commit SHA to build
         required: true
         type: string
         default: main
@@ -54,7 +54,7 @@ jobs:
           PUBLISH_RELEASE: ${{ inputs.publish_release }}
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
-          if [[ "$PUBLISH_RELEASE" == "true" && ! "$RELEASE_TAG" =~ ^v[0-9]+\\.[0-9]+\\.[0-9]+$ ]]; then
+          if [[ "$PUBLISH_RELEASE" == "true" && ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Release tag must use semantic version format such as v1.0.0."
             exit 1
           fi
