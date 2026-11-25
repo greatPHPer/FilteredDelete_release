@@ -35,30 +35,22 @@ Linux desktop environments must provide the system graphics/input libraries requ
 
 See the release notes for version-specific changes and known limitations.
 
-## Maintainer: build and publish a release
+## Selection behavior
 
-The build workflow runs in this **public** repository so standard GitHub-hosted runners are eligible for free usage. The application source remains in the private `greatPHPer/FilteredDelete` repository.
+- **Checked** means the item is selected for deletion.
+- **Unchecked** means the item is kept.
+- **Indeterminate** means a folder contains a mixture of items to delete and keep.
+- All deletable items start checked; uncheck anything you want to retain.
+- The selected root folder is always kept.
 
-### One-time setup
+## Preview and safety
 
-1. Create a fine-grained personal access token for `greatPHPer/FilteredDelete`.
-2. Give it access to **Only select repositories** → `FilteredDelete`.
-3. Grant **Contents: Read-only**. Do not grant write access.
-4. In this public repository, open **Settings → Secrets and variables → Actions** and add a repository secret named `SOURCE_READ_TOKEN` with that token.
+Generate and review a preview before executing any operation. The default action moves approved items to the operating system's Recycle Bin / Trash. Permanent deletion is a separate option and requires typing `DELETE`. The application does not silently fall back to permanent deletion.
 
-### Test a build without publishing
+## Copy and move
 
-Open **Actions → Build and publish FilteredDelete → Run workflow**. Select `main` as `source_ref` and leave `publish_release` unchecked. The workflow builds and tests Windows x64, Linux x64 and Linux ARM64, then stores temporary artifacts for 7 days.
+Copy To and Move To operate on manually kept (unchecked) files and folders. Pattern-based or inherited keeps are not automatically treated as transfer selections.
 
-### Publish a version
+## Source code
 
-First, create and push a version tag in the private source repository, after validating that source revision:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-Then run the workflow in this public repository with `source_ref` set to `v1.0.0` and `publish_release` checked. After all three build jobs pass, it creates the public release and uploads the platform archives and `SHA256SUMS.txt`.
-
-The workflow uses this repository's automatically provided `GITHUB_TOKEN` to publish the release; no release-write PAT is required.
+The application source is maintained in the private [FilteredDelete source repository](https://github.com/greatPHPer/FilteredDelete). This public repository is for downloads and release notes.
